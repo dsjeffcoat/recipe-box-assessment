@@ -5,5 +5,7 @@
         <h2>{{ post.title }}</h2>
         <a href="/author/{{ post.author.id }}">{{ post.author }}</a>
         <p>{{ post.body }}</p>
+        <p>{{ post.instructions }}</p>
+        <h4>{{ post.time_required }}</h4>
     {% endif %}
 </div>

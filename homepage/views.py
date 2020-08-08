@@ -10,7 +10,7 @@ from homepage.models import Author
 def index(request):
     html = "index.html"
     my_recipes = Recipe.objects.all()
-    return render(request, html, {"recipes": my_recipes, "welcome_name": "SE-9"})
+    return render(request, html, {"recipes": my_recipes, "welcome_name": "Box"})
 
 
 def post_detail(request, post_id):

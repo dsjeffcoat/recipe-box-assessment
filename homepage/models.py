@@ -26,7 +26,7 @@ class Recipe(models.Model):
     title = models.CharField(max_length=80)
     body = models.TextField()
     instructions = models.TextField(default="Pending")
-    time_required = models.CharField(max_length=50, default="Pending")
+    time_required = models.CharField(max_length=50)
     post_date = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
 

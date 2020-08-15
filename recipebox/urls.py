@@ -21,11 +21,10 @@ from homepage import views
 urlpatterns = [
     path('', views.index, name="homepage"),
     path('post/<int:post_id>/', views.post_detail),
-    path('newrecipe/', views.recipe_view_form, name="newrecipe"),
-    path('newauthor/', views.author_view_form, name="newauthor"),
+    path('addrecipe/', views.recipe_view_form, name="addrecipe"),
+    path('addauthor/', views.author_view_form, name="addauthor"),
     path('author/<int:post_id>/', views.author_details),
     path('login/', views.login_view, name="loginview"),
     path('logout/', views.logout_view, name="logoutview"),
-    # path('signup/', views.signup_view, name="signupview"),
     path('admin/', admin.site.urls),
     ]

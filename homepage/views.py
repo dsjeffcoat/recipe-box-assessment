@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponseRedirect, reverse
+from django.shortcuts import render, HttpResponseRedirect, reverse, HttpResponse
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -54,15 +54,17 @@ def recipe_view_form(request):
 # @staff_member_required()
 @login_required
 def author_view_form(request):
-    if request.method == "POST":
-        form = AuthorForm(request.POST)
-        if form.is_valid():
-            data = form.cleaned_data
-            new_user = User.objects.create_user(username=data.get("username"), password=data.get("password"))
-            Author.objects.create(name=data.get("username"), user=new_user)
-            # login(request, new_user)
-            return HttpResponseRedirect(reverse("homepage"))
-
+    if request.user.is_staff:
+        if request.method == "POST":
+            form = AuthorForm(request.POST)
+            if form.is_valid():
+                data = form.cleaned_data
+                new_user = User.objects.create_user(username=data.get("username"), password=data.get("password"))
+                Author.objects.create(name=data.get("username"), user=new_user)
+                # login(request, new_user)
+                return HttpResponseRedirect(reverse("homepage"))
+    else:
+        return HttpResponse('Do not have proper credentials, return to homepage')
     form = AuthorForm()
     return render(request, "basic_form.html", {"form": form})
 

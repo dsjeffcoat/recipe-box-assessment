@@ -10,9 +10,8 @@
                 </li>
             {% endfor %}
         </ul>
-    {% if request.user.is_staff %}
+
     <a href="/addauthor/"><input class="addAuthor" type="submit" value="Add New Author"></a>
-    {% endif %}
     <a href="/addrecipe/"><input class="addRecipe" type="submit" value="Add New Recipe"></a>
     <a href="/logout/"><input class="logout" type="submit" value="Logout"></a>
     <a href="/login/"><input class="login" type="submit" value="Login"></a>

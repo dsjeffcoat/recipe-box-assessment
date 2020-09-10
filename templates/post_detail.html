@@ -8,17 +8,21 @@
   <p>{{ post.instructions }}</p>
   <h4>{{ post.time_required }}</h4>
 
-  {% if not request.user.is_authenticated %}
-  <a href="/"><input class="homeButton" type="submit" value="Homepage" /></a>
-  {% else %} {% if post in favorites %}
-  <a href="/removefavorite/{{post.id}}/"
-    ><input class="remove" type="submit" value="Remove From Favorites"
-  /></a>
+  {% if request.user.is_authenticated %} {% if post in favorites %}
+  <a href="/removefavorite/{{post.id}}/">
+    <input class="remove" type="submit" value="Remove From Favorites" />
+  </a>
   {% else %}
-  <a href="/addfavorite/{{post.id}}/"
-    ><input class="add" type="submit" value="Add To Favorites"
-  /></a>
-  {% endif %}
-  <a href="/"><input class="homeButton" type="submit" value="Homepage" /></a>
+  <a href="/addfavorite/{{post.id}}/">
+    <input class="add" type="submit" value="Add To Favorites" />
+  </a>
+  {% endif %} {% if request.user.is_staff or post.author.user == request.user %}
+  <a href="/post/{{post.id}}/edit/">
+    <input class="edit" type="submit" value="Edit Recipe" />
+  </a>
   {% endif %} {% endif %}
+  <a href="/">
+    <input class="homeButton" type="submit" value="Homepage" />
+  </a>
+  {% endif %}
 </div>

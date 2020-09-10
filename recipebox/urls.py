@@ -20,7 +20,8 @@ from homepage import views
 
 urlpatterns = [
     path('', views.index, name="homepage"),
-    path('post/<int:post_id>/', views.post_detail),
+    path('post/<int:post_id>/edit/', views.edit_recipe_view, name='editrecipe'),
+    path('post/<int:post_id>/', views.post_detail, name='post_detail'),
     path('addrecipe/', views.recipe_view_form, name="addrecipe"),
     path('addfavorite/<int:post_id>/',
          views.add_favorite_view, name='addfavorite'),

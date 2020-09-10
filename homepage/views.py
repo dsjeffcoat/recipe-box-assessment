@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from homepage.models import Recipe, Author
 
 from homepage.forms import RecipeForm, AuthorForm, LoginForm
-
+from django import forms
 
 # Create your views here.
 
@@ -109,3 +109,33 @@ def remove_favorite_view(request, post_id):
     fav_recipe = Recipe.objects.filter(id=post_id).first()
     current_user.favorites.remove(fav_recipe)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
+def edit_recipe_view(request, post_id):
+    recipe = Recipe.objects.get(id=post_id)
+
+    if request.method == 'POST':
+        form = RecipeForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            recipe.title = data['title']
+            recipe.body = data['body']
+            recipe.instructions = data['instructions']
+            recipe.time_required = data['time_required']
+            recipe.author = data['author']
+            recipe.save()
+        return HttpResponseRedirect(reverse('post_detail', args=[recipe.id]))
+
+    data = {
+        'title': recipe.title,
+        'body': recipe.body,
+        'instructions': recipe.instructions,
+        'time_required': recipe.time_required,
+        'author': recipe.author,
+    }
+    form = RecipeForm(initial=data)
+    if not request.user.is_staff:
+        form.fields['author'] = forms.ModelChoiceField(
+            queryset=Author.objects.filter(name=request.user.author))
+    return render(request, 'basic_form.html', {'form': form})

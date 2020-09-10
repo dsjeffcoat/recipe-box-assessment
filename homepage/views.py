@@ -22,14 +22,21 @@ def index(request):
 def post_detail(request, post_id):
     html = "post_detail.html"
     my_recipe = Recipe.objects.filter(id=post_id).first()
-    return render(request, html, {"post": my_recipe})
+    user = Author.objects.all()
+    if request.user.is_authenticated:
+        user = Author.objects.filter(user=request.user).first()
+        favorites = user.favorites.all()
+    else:
+        favorites = []
+    return render(request, html, {"post": my_recipe, 'favorites': favorites, 'user': user})
 
 
 def author_details(request, post_id):
     html = "author_details.html"
     my_author = Author.objects.filter(id=post_id).first()
     my_recipe = Recipe.objects.filter(author=my_author.id)
-    return render(request, html, {"post": my_author, "recipes": my_recipe})
+    favorites = Recipe.objects.filter(id__in=my_author.favorites.all())
+    return render(request, html, {"post": my_author, "recipes": my_recipe, 'favorites': favorites})
 
 
 @login_required
@@ -59,7 +66,8 @@ def author_view_form(request):
             form = AuthorForm(request.POST)
             if form.is_valid():
                 data = form.cleaned_data
-                new_user = User.objects.create_user(username=data.get("username"), password=data.get("password"))
+                new_user = User.objects.create_user(username=data.get(
+                    "username"), password=data.get("password"))
                 Author.objects.create(name=data.get("username"), user=new_user)
                 # login(request, new_user)
                 return HttpResponseRedirect(reverse("homepage"))
@@ -74,7 +82,8 @@ def login_view(request):
         form = LoginForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-            user = authenticate(request, username=data.get("username"), password=data.get("password"))
+            user = authenticate(request, username=data.get(
+                "username"), password=data.get("password"))
             if user:
                 login(request, user)
                 return HttpResponseRedirect(request.GET.get('next', reverse("homepage")))
@@ -87,3 +96,16 @@ def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("homepage"))
 
+
+def add_favorite_view(request, post_id):
+    current_user = Author.objects.get(user=request.user)
+    fav_recipe = Recipe.objects.filter(id=post_id).first()
+    current_user.favorites.add(fav_recipe)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+def remove_favorite_view(request, post_id):
+    current_user = Author.objects.get(user=request.user)
+    fav_recipe = Recipe.objects.filter(id=post_id).first()
+    current_user.favorites.remove(fav_recipe)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

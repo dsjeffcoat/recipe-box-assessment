@@ -1,14 +1,20 @@
 <div class="container">
-       {% if not post %}
-        <h1>The author you are looking for is non existent!</h1>
-        {% else %}
-        <h2>{{ post.name}}</h2>
-        <h4>{{ post.bio}}</h4>
-           {% for recipe in recipes %}
-        <ul>
-            <li><a href="/post/{{ post.id }}/">{{ recipe.title }}</a></li>
-        </ul>
-           {% endfor %}
-    {% endif %}
-<a href="/"><input class="homeButton" type="submit" value="Homepage"></a>
+  {% if not post %}
+  <h1>The author you are looking for is non existent!</h1>
+  {% else %}
+  <h2>{{ post.name}}</h2>
+  <h4>{{ post.bio}}</h4>
+  {% for recipe in recipes %}
+  <ul>
+    <li><a href="/post/{{ recipe.id }}/">{{ recipe.title }}</a></li>
+  </ul>
+  {% endfor %}
+
+  <h4>{{post.name}}'s Favorite Recipes</h4>
+  {% for favorite in favorites %}
+  <ul>
+    <li><a href="/post/{{ favorite.id }}/">{{ favorite.title }}</a></li>
+  </ul>
+  {% endfor %} {% endif %}
+  <a href="/"><input class="homeButton" type="submit" value="Homepage" /></a>
 </div>

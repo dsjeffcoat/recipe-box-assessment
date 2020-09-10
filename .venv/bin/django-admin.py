@@ -1,4 +1,4 @@
-#!/Users/mjdemory/KA-Q4/recipe-box/.venv/bin/python
+#!/Users/Sentrell/kenzie-academy/quarter4/assessments/recipe-box-assessment/.venv/bin/python
 # When the django-admin.py deprecation ends, remove this script.
 import warnings
 

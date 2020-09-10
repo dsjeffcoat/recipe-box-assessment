@@ -1,4 +1,4 @@
-#!/Users/mjdemory/KA-Q4/recipe-box/.venv/bin/python
+#!/Users/Sentrell/kenzie-academy/quarter4/assessments/recipe-box-assessment/.venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys

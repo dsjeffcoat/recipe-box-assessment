@@ -1,12 +1,24 @@
 <div class="container">
-    {% if not post %}
-        <h1>The post you are looking for is non existent!</h1>
-        {% else %}
-        <h2>{{ post.title }}</h2>
-        <a href="/author/{{ post.author.id }}">{{ post.author }}</a>
-        <p>{{ post.body }}</p>
-        <p>{{ post.instructions }}</p>
-        <h4>{{ post.time_required }}</h4>
-    {% endif %}
-    <a href="/"><input class="homeButton" type="submit" value="Homepage"></a>
+  {% if not post %}
+  <h1>The post you are looking for is non existent!</h1>
+  {% else %}
+  <h2>{{ post.title }}</h2>
+  <a href="/author/{{ post.author.id }}">{{ post.author }}</a>
+  <p>{{ post.body }}</p>
+  <p>{{ post.instructions }}</p>
+  <h4>{{ post.time_required }}</h4>
+
+  {% if not request.user.is_authenticated %}
+  <a href="/"><input class="homeButton" type="submit" value="Homepage" /></a>
+  {% else %} {% if post in favorites %}
+  <a href="/removefavorite/{{post.id}}/"
+    ><input class="remove" type="submit" value="Remove From Favorites"
+  /></a>
+  {% else %}
+  <a href="/addfavorite/{{post.id}}/"
+    ><input class="add" type="submit" value="Add To Favorites"
+  /></a>
+  {% endif %}
+  <a href="/"><input class="homeButton" type="submit" value="Homepage" /></a>
+  {% endif %} {% endif %}
 </div>
